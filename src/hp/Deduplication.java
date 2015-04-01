@@ -7,6 +7,7 @@ public class Deduplication {
 	/**
 	 * Easy Mode
 	 * @param int [] data
+	 * 适用于数据量小，数字分布比较集中的情形
 	 * 
 	 * 使用bool数组的下标作为元素的索引，加速判断元素是否已存在 
 	 * 1. 如果元素不存在就将该元素字面值对应的 数组的位置 置 1
@@ -67,10 +68,46 @@ public class Deduplication {
 	}
 	
 	/**
+	 * Normal Mode
+	 * 使用异或运算去重
+	 * 适用于数据量小，数据分布比较分散，稀松的情况
+	 */
+	public static int[] normalDedupl(int[] data){
+		int size = data.length;
+		int[] unique = new int[size];
+		unique[0] = data[0];
+		int cnt=1;
+		
+		
+		for (int i=1; i < size; i++) {
+			boolean isExist = false;
+			for(int j=0;j<cnt;j++){
+				//'XOR' two equivalent numbers get 0
+				if((unique[j] ^ data[i]) ==0){
+					isExist = true;
+					break;	//the same number occurs, move on 		
+				}
+			}
+			
+			//never occur in unique set
+			if (!isExist) {
+				unique[cnt++] = data[i];
+			}
+		}
+		
+		int[] result = new int[cnt];
+		System.arraycopy(unique, 0, result, 0, cnt);
+		
+		return result;
+	}
+	
+	
+	/**
 	 * Hard Mode 
 	 * Save space, but a little bit complex
 	 * @param int [] data
 	 * 
+	 * 适用于数据量大，但数据分布比较集中的情况
 	 */
 	public static int[] hardDedupl(int[] data){
 		int SIZE = data.length;
@@ -121,7 +158,8 @@ public class Deduplication {
 		
 		System.out.println("");
 		
-		data = easyDedupl(data);
+		//data = easyDedupl(data);
+		data = normalDedupl(data);
 		//data = hardDedupl(data);
 		for(int n: data)
 			System.out.print(n+" ");
