@@ -2,19 +2,19 @@ package basic_ds;
 
 public class BitMap {
 
-	public static final int N=1000;					//number of data
+	public static int N=1000;						//number of data, not final, in case it's needed in other program
 	public static final int UNIT=32;				//data's bits
 	public static final int SHIFT=5;				// i/unit = i >> shift
 	public static final int MASK=0x1F;				//unit - 1
-	public static final int[] MAP=new int[1+N/UNIT];//container of all bits
+	public static int[] MAP=new int[1+N>>SHIFT];	//container of all bits
 	
 	/**
 	 * set ith bit 1
 	 * @param i
 	 */
 	public static void set(int i){
-		int pos=i>>SHIFT;
-		MAP[pos] = MAP[pos] | (1 << (i & MASK)); //i/UNIT is index, i & MASK = i % UNIT, OR operation set ith 1
+		int pos=i>>SHIFT;	//equals i/UNIT
+		MAP[pos] = MAP[pos] | (1 << (i & MASK)); //i/UNIT is index, i & MASK = i % UNIT, 'OR' operation set ith as 1
 	}
 	
 	/**
